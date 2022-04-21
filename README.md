@@ -4,8 +4,8 @@
 A python program that can play notes on the Ab pentatonic scale that I've been working on for the past two days
 
 ## Requirements
-*Pygame 2.1.2
-*Python 3.10
+* _Pygame 2.1.2_
+* _Python 3.10_
 
 ## Controls
 n- create new note
