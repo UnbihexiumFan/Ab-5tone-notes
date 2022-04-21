@@ -159,7 +159,7 @@ while True:
                 c.create_rectangle(offset, 54, offset+10, 50, fill="#000000")
             elif nleng == 3:
                 c.create_rectangle(offset, 54, offset+10, 50, fill="#000000")
-                c.create_line(offset+15, 49, offset+15, 51, width=1.5)
+                c.create_line(offset+15, 49, offset+13, 51, width=1.5)
             elif nleng == 1:
                 c.create_line(offset, 35, offset+5, 40, offset, 50, offset+5, 55, offset, 55, offset+3, 60, width=1.5)
         offset += 15
