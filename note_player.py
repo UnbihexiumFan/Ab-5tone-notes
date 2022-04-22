@@ -11,6 +11,8 @@ tk = Tk()
 c = Canvas(tk, width=1000, height=160, bg="#ffffff")
 c.pack()
 
+
+
 class Note(Sound):
     def __init__(self, frequency, volume=.1):
         self.frequency = frequency
@@ -59,7 +61,22 @@ heightmap = {
 
 tempo = 144
 
-note_seq = []
+note_seq = [[8, 1], [7, 1], [6, 1], [7, 1], [8, 1], [8, 1], [8, 2], [7, 1],
+            [7, 1], [7, 2], [8, 1], [10, 1], [10, 2], [8, 1], [7, 1], [6, 1],
+            [7, 1], [8, 1], [8, 1], [8, 2], [7, 1], [7, 1], [8, 1], [7, 1],
+            [6, 2], [256, 2], [5, 1], [5, 1], [9, 1], [9, 1], [10, 1], [10, 1],
+            [9, 2], [8, 1], [8, 1], [7, 1], [7, 1], [6, 1], [6, 1], [5, 2],
+            [9, 1], [9, 1], [8, 1], [8, 1], [7, 1], [7, 1], [6, 2], [9, 1],
+            [9, 1], [8, 1], [8, 1], [7, 1], [7, 1], [6, 2], [5, 1], [5, 1],
+            [9, 1], [9, 1], [10, 1], [10, 1], [9, 2], [8, 1], [8, 1], [7, 1],
+            [7, 1], [6, 1], [6, 1], [5, 2]]
+
+def list_split(listA, n):
+    list_ = []
+    for x in range(0, len(listA), n):
+        every_chunk = listA[x: n+x]
+        list_.append(every_chunk)
+    return list_
 
 def play_note(note_id, length):
     """Plays a note on an Ab pentatonic scale with a given
@@ -90,21 +107,62 @@ note_id_text = \
 9 = Middle F
 10 = High Ab"""
 
+x = 0
+
 class SoundControls():
     def play(event):
         for note in note_seq:
             play_note(note[0], note[1])
     def addrest(event):
-        note_seq.append([256, askinteger(" ","Note length (beats)", minvalue=1, maxvalue=4)])
+        len_ = askinteger(" ","Note length (beats)", minvalue=1, maxvalue=4)
+        if len_:
+            note_seq.append([256, len_])
     def addnote(event):
-        note_seq.append([askinteger(" ",note_id_text, minvalue=0, maxvalue=10), askinteger(" ","Note length (beats)", minvalue=1, maxvalue=4)])
+        note_ = askinteger(" ", note_id_text, minvalue=0, maxvalue=10)
+        len_ = askinteger(" ","Note length (beats)", minvalue=1, maxvalue=4)
+        if len_ and note_:
+            note_seq.append([note_, len_])
     def subnote(event):
-        note_seq.pop(len(note_seq)-1)
+        if len(note_seq) > 0:
+            note_seq.pop(len(note_seq)-1)
+    def load_pres(event):
+        global note_seq
+        preset = None
+        while preset not in ["#000", "#001"]:
+            preset = askstring(" ","Preset:\n\"#000\": Blank\n\"#001\": Mary Ha\
+d a Little Lamb and Twinkle Twinkle Little Star")
+        if preset == "#000":
+            note_seq = []
+        elif preset == "#001":
+            note_seq = [[8, 1], [7, 1], [6, 1], [7, 1], [8, 1], [8, 1], [8, 2],
+                        [7, 1], [7, 1], [7, 2], [8, 1], [10, 1], [10, 2],
+                        [8, 1], [7, 1], [6, 1], [7, 1], [8, 1], [8, 1], [8, 2],
+                        [7, 1], [7, 1], [8, 1], [7, 1], [6, 2], [256, 2],
+                        [5, 1], [5, 1], [9, 1], [9, 1], [10, 1], [10, 1],
+                        [9, 2], [8, 1], [8, 1], [7, 1], [7, 1], [6, 1], [6, 1],
+                        [5, 2], [9, 1], [9, 1], [8, 1], [8, 1], [7, 1], [7, 1],
+                        [6, 2], [9, 1], [9, 1], [8, 1], [8, 1], [7, 1], [7, 1],
+                        [6, 2], [5, 1], [5, 1], [9, 1], [9, 1], [10, 1],
+                        [10, 1], [9, 2], [8, 1], [8, 1], [7, 1], [7, 1], [6, 1],
+                        [6, 1], [5, 2]]
+        
+
+class ScreenControls():
+    def left(event):
+        global x
+        if x > 0:
+            x -= 1
+    def right(event):
+        global x
+        x += 1
 
 c.bind_all("<KeyPress-n>", SoundControls.addnote)
 c.bind_all("<KeyPress-r>", SoundControls.addrest)
 c.bind_all("<KeyPress-s>", SoundControls.subnote)
+c.bind_all("<KeyPress-p>", SoundControls.load_pres)
 c.bind_all("<KeyPress-space>", SoundControls.play)
+c.bind_all("<KeyPress-Left>", ScreenControls.left)
+c.bind_all("<KeyPress-Right>", ScreenControls.right)
 
 while True:
     c.delete("all")
@@ -135,32 +193,34 @@ while True:
     c.create_text(70, 110, text="4", font=("Default", 15))
     c.create_text(70, 130, text="4", font=("Default", 15))
     offset = 80
-    for note in note_seq:
-        if note[0] != 256:
-            notey = heightmap[note[0]]
-            nleng = note[1]
-            if nleng == 4:
-                c.create_oval(offset, notey+4, offset+10, notey-4, width=1.5)
-            elif nleng == 2:
-                c.create_oval(offset, notey+4, offset+10, notey-4, width=1.5)
-                c.create_line(offset+10, notey, offset+10, notey-25, width=1.5)
-            elif nleng == 3:
-                c.create_oval(offset, notey+4, offset+10, notey-4, width=1.5)
-                c.create_line(offset+10, notey, offset+10, notey-25, width=1.5)
-                c.create_line(offset+13, notey-1, offset+13, notey+1, width=1.5)
-            elif nleng == 1:
-                c.create_oval(offset, notey+4, offset+10, notey-4, width=1.5, fill="#000000")
-                c.create_line(offset+10, notey, offset+10, notey-25, width=1.5)
-        elif note[0] == 256:
-            nleng = note[1]
-            if nleng == 4:
-                c.create_rectangle(offset, 46, offset+10, 50, fill="#000000")
-            elif nleng == 2:
-                c.create_rectangle(offset, 54, offset+10, 50, fill="#000000")
-            elif nleng == 3:
-                c.create_rectangle(offset, 54, offset+10, 50, fill="#000000")
-                c.create_line(offset+15, 49, offset+13, 51, width=1.5)
-            elif nleng == 1:
-                c.create_line(offset, 35, offset+5, 40, offset, 50, offset+5, 55, offset, 55, offset+3, 60, width=1.5)
-        offset += 15
+    note_seq_ = list(list_split(note_seq, 61))
+    if x < len(note_seq_):
+        for note in note_seq_[x]:
+            if note[0] != 256:
+                notey = heightmap[note[0]]
+                nleng = note[1]
+                if nleng == 4:
+                    c.create_oval(offset, notey+4, offset+10, notey-4, width=1.5)
+                elif nleng == 2:
+                    c.create_oval(offset, notey+4, offset+10, notey-4, width=1.5)
+                    c.create_line(offset+10, notey, offset+10, notey-25, width=1.5)
+                elif nleng == 3:
+                    c.create_oval(offset, notey+4, offset+10, notey-4, width=1.5)
+                    c.create_line(offset+10, notey, offset+10, notey-25, width=1.5)
+                    c.create_line(offset+13, notey-1, offset+13, notey+1, width=1.5)
+                elif nleng == 1:
+                    c.create_oval(offset, notey+4, offset+10, notey-4, width=1.5, fill="#000000")
+                    c.create_line(offset+10, notey, offset+10, notey-25, width=1.5)
+            elif note[0] == 256:
+                nleng = note[1]
+                if nleng == 4:
+                    c.create_rectangle(offset, 54, offset+10, 50, fill="#000000")
+                elif nleng == 2:
+                    c.create_rectangle(offset, 46, offset+10, 50, fill="#000000")
+                elif nleng == 3:
+                    c.create_rectangle(offset, 46, offset+10, 50, fill="#000000")
+                    c.create_line(offset+15, 49, offset+13, 51, width=1.5)
+                elif nleng == 1:
+                    c.create_line(offset, 35, offset+5, 40, offset, 50, offset+5, 55, offset, 55, offset+3, 60, width=1.5)
+            offset += 15
     tk.update()
