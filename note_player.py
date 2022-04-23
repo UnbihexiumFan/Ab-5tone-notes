@@ -195,6 +195,11 @@ while True:
     offset = 80
     note_seq_ = list(list_split(note_seq, 61))
     if x < len(note_seq_):
+        bef_notes = []
+        for line in note_seq_[:x]:
+            bef_notes += line
+        for note in bef_notes:
+            measures += note[1]
         for note in note_seq_[x]:
             if note[0] != 256:
                 notey = heightmap[note[0]]
@@ -222,5 +227,8 @@ while True:
                     c.create_line(offset+15, 49, offset+13, 51, width=1.5)
                 elif nleng == 1:
                     c.create_line(offset, 35, offset+5, 40, offset, 50, offset+5, 55, offset, 55, offset+3, 60, width=1.5)
+            measures += nleng
+            if measures % 4 == 0 and offset < 980:
+                c.create_line(offset+13, 20, offset+13, 150)
             offset += 15
     tk.update()
