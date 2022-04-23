@@ -114,15 +114,18 @@ class SoundControls():
         for note in note_seq:
             play_note(note[0], note[1])
     def addrest(event):
+        global note_seq
         len_ = askinteger(" ","Note length (beats)", minvalue=1, maxvalue=4)
         if len_:
             note_seq.append([256, len_])
     def addnote(event):
+        global note_seq
         note_ = askinteger(" ", note_id_text, minvalue=0, maxvalue=10)
         len_ = askinteger(" ","Note length (beats)", minvalue=1, maxvalue=4)
-        if len_ and note_:
+        if (len_ and note_) or ((note_ == 0) and len_):
             note_seq.append([note_, len_])
     def subnote(event):
+        global note_seq
         if len(note_seq) > 0:
             note_seq.pop(len(note_seq)-1)
     def load_pres(event):
