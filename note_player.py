@@ -14,7 +14,7 @@ c.pack()
 
 
 class Note(Sound):
-    def __init__(self, frequency, volume=.1):
+    def __init__(self, frequency, volume=.01):
         self.frequency = frequency
         Sound.__init__(self, self.build_samples())
         self.set_volume(volume)
