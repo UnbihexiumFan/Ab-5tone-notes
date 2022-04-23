@@ -8,19 +8,23 @@ A python program that can play notes on the Ab pentatonic scale that I've been w
 * _Python 3.10_
 
 ## Controls
-n create new note
+n- create new note
 
     Note ID: Specifies which note id to use. Can be from 0-10, though rests use the id 256.
     Note length: Specifies the note length, in beats.
 
-r create new rest
+r- create new rest
 
     Note length: Specifies the note length, in beats.
 
-s remove note
+s- remove note
 
     Removes the last note or rest in the track.
 
-space play
+space- play
 
     Plays the track.
+
+p- preset
+
+	Plays a song from a list
