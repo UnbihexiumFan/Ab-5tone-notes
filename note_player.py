@@ -79,9 +79,6 @@ def list_split(listA, n):
     return list_
 
 def play_note(note_id, length):
-    """Plays a note on an Ab pentatonic scale with a given
-note id (0 = Ab1, 1 = Bb1, 2 = C2, etc.) and a given
-length in beats"""
     if note_id != 256:
         note = Note(notemap[note_id])
         note.play(-1)
@@ -188,9 +185,9 @@ while True:
     c.create_text(40, 55, text="♭")
     c.create_text(47, 40, text="♭")
     c.create_text(54, 60, text="♭")
-    c.create_text(40, 125, text="♭")
-    c.create_text(47, 110, text="♭")
-    c.create_text(54, 130, text="♭")
+    c.create_text(40, 130, text="♭")
+    c.create_text(47, 115, text="♭")
+    c.create_text(54, 135, text="♭")
     c.create_text(70, 40, text="4", font=("Default", 15))
     c.create_text(70, 60, text="4", font=("Default", 15))
     c.create_text(70, 110, text="4", font=("Default", 15))
