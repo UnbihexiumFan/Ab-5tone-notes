@@ -28,3 +28,6 @@ space- play
 p- preset
 
 	Plays a song from a list
+
+## Further Development
+I really think this is more of a basic program, so I'll probably only put basic features in here, but there's also anoter note player I'm working on.
