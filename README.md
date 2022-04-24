@@ -27,7 +27,11 @@ space- play
 
 p- preset
 
-	Plays a song from a list
+	Plays a song from a predefined list. There are no rickrolls in here at all-
+
+arrow keys- move page
+
+	Changes the page on the screen; if the amount of notes in your track is greater than 54, move to the next/previous set of 54 notes.
 
 ## Further Development
 I really think this is more of a basic program, so I'll probably only put basic features in here, but there's also anoter note player I'm working on.
