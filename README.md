@@ -27,7 +27,7 @@ space- play
 
 p- preset
 
-	Plays a song from a predefined list. There are no rickrolls in here at all-
+	Plays a song from a predefined list.
 
 arrow keys- move page
 
